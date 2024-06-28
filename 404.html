@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting...</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Get the current URL path
+            let path = window.location.pathname;
+
+            // Define the new base URL
+            let newBaseUrl = "https://www.whisperingvinewine.com";
+
+            // Construct the new URL
+            let newUrl = newBaseUrl + path;
+
+            // Redirect to the new URL
+            window.location.href = newUrl;
+        });
+    </script>
+</head>
+<body>
+    <p>Redirecting you to the new website...</p>
+</body>
+</html>
