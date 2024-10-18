@@ -2,7 +2,7 @@ name: Daily Hours Check
 
 on:
   schedule:
-    - cron: '0 0 * * *' # Runs daily at midnight UTC
+    - cron: '0 8 * * *' # Runs daily at midnight UTC
 
 jobs:
   get-business-hours:
