@@ -2,7 +2,7 @@ const axios = require('axios');
 const fs = require('fs');
 
 // Replace with your own Google API key
-const API_KEY = 'AIzaSyDKxmoGRIIcWtWC4_2tt7BbQlu-AC-8gC0';
+const API_KEY = '';
 
 // Place IDs for 4th and Foothill locations
 const fourthPlaceId = 'ChIJRYa2xUlBmYARjYfP8QWaWfQ'; // 4th St location
