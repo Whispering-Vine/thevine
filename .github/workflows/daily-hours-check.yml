@@ -1,0 +1,33 @@
+name: Daily Hours Check
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Runs daily at midnight UTC
+
+jobs:
+  get-business-hours:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Install dependencies
+      run: npm install axios
+
+    - name: Fetch and Process Business Hours
+      run: |
+        node get-hours.js
+
+    - name: Commit hours_today.json
+      run: |
+        git config --global user.email "your-email@example.com"
+        git config --global user.name "GitHub Actions"
+        git add hours_today.json
+        git commit -m "Update today's business hours"
+        git push
