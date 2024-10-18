@@ -28,7 +28,7 @@ jobs:
 
     - name: Commit hours_today.json
       run: |
-        git config --global user.email "your-email@example.com"
+        git config --global user.email "kyleworrall54@gmail.com"
         git config --global user.name "GitHub Actions"
         git add hours_today.json
         git commit -m "Update today's business hours"
