@@ -33,6 +33,7 @@ async function fetchBusinessHours(placeId) {
 // Function to calculate the status of the business
 function getBusinessStatus(periods) {
   const now = getCurrentPacificTime();
+  console.log(now);
   const currentDay = now.getDay(); // Sunday = 0, Monday = 1, ..., Saturday = 6
   const currentTime = now.getHours() * 100 + now.getMinutes(); // Current time in 'HHMM' format
 
@@ -75,7 +76,7 @@ function getBusinessStatus(periods) {
 
   const fourthHours = fourth ? getBusinessStatus(fourth.current_opening_hours.periods) : { open: false, status: 'closed' };
   const foothillHours = foothill ? getBusinessStatus(foothill.current_opening_hours.periods) : { open: false, status: 'closed' };
-
+  console.log(fourthHours);
   const hoursToday = {
     fourth: fourthHours,
     foothill: foothillHours
