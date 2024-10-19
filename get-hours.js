@@ -2,11 +2,11 @@ const axios = require('axios');
 const fs = require('fs');
 
 // Replace with your own Google API key
-const API_KEY = process.env.GOOGLE_API_KEY;;
+const API_KEY = process.env.GOOGLE_API_KEY;
 
 // Place IDs for 4th and Foothill locations
-const fourthPlaceId = 'ChIJRYa2xUlBmYARjYfP8QWaWfQ'; // 4th St location
-const foothillPlaceId = 'ChIJy2IdIjwVmYARcJ7NkrHy1-I'; // Replace with Foothill location's actual place_id
+const fourthPlaceId = 'ChIJRYa2xUlBmYARjYfP8QWaWfQ';
+const foothillPlaceId = 'ChIJy2IdIjwVmYARcJ7NkrHy1-I'; // Foothill Place ID
 
 // Utility function to get the current time in the business's timezone
 function getCurrentPacificTime() {
@@ -45,7 +45,7 @@ function getBusinessStatus(periods) {
 
   // 5-minute leeway
   const openLeeway = openTime - 5;
-  const closeLeeway = closeTime + 5;
+  const closeLeeway = closeTime;
 
   // Check "opening soon" (within 30 minutes) and handle leeway for opening
   if (currentTime >= openLeeway - 30 && currentTime < openLeeway) {
@@ -53,7 +53,7 @@ function getBusinessStatus(periods) {
   }
 
   // Check "closing soon" (within 30 minutes) and handle leeway for closing
-  if (currentTime > closeLeeway - 30 && currentTime <= closeLeeway) {
+  if (currentTime >= closeLeeway - 30 && currentTime < closeLeeway) {
     return { open: true, status: 'closing soon' };
   }
 
@@ -68,23 +68,19 @@ function getBusinessStatus(periods) {
 
 // Main function to fetch and process business hours
 (async function () {
-  // Fetch hours for both locations
   const [fourth, foothill] = await Promise.all([
     fetchBusinessHours(fourthPlaceId),
     fetchBusinessHours(foothillPlaceId),
   ]);
 
-  // Process the hours and calculate status
   const fourthHours = fourth ? getBusinessStatus(fourth.current_opening_hours.periods) : { open: false, status: 'closed' };
   const foothillHours = foothill ? getBusinessStatus(foothill.current_opening_hours.periods) : { open: false, status: 'closed' };
 
-  // Create the JSON output
   const hoursToday = {
     fourth: fourthHours,
     foothill: foothillHours
   };
 
-  // Save to hours_today.json
   fs.writeFileSync('hours_today.json', JSON.stringify(hoursToday, null, 2));
 
   console.log('Business hours for today saved to hours_today.json');
