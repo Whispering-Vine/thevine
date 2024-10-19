@@ -1,0 +1,12 @@
+{
+  "fourth": {
+    "open": true,
+    "status": "open",
+    "hours": "11:00-21:00"
+  },
+  "foothill": {
+    "open": true,
+    "status": "open",
+    "hours": "11:00-21:00"
+  }
+}
