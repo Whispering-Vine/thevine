@@ -33,11 +33,12 @@ async function fetchBusinessHours(placeId) {
 // Function to calculate the status of the business
 function getBusinessStatus(periods) {
   const now = getCurrentPacificTime();
-  console.log(now);
   const currentDay = now.getDay(); // Sunday = 0, Monday = 1, ..., Saturday = 6
+  const currentDate = now.toISOString().split('T')[0].replace(/-/g, ''); // 'YYYYMMDD' format
   const currentTime = now.getHours() * 100 + now.getMinutes(); // Current time in 'HHMM' format
 
-  const todayPeriod = periods.find(p => p.open.day === currentDay);
+  // Find the period for today by matching both day and date
+  const todayPeriod = periods.find(p => p.open.day === currentDay && p.open.date === currentDate);
 
   if (!todayPeriod) return { open: false, status: 'closed' };
 
