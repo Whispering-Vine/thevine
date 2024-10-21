@@ -37,4 +37,5 @@ jobs:
             git push
           else
             echo "hours_today.json does not exist."
-          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Add the GITHUB_TOKEN
