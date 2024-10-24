@@ -1,4 +1,3 @@
-<script>
 (function() {
     // Create style element
     const style = document.createElement('style');
@@ -252,4 +251,3 @@ actionButtons.querySelectorAll('.action-button').forEach(button => {
         actionButtons.querySelectorAll('.action-button:not(.call-button)').forEach(updateStatusIndicator);
     }, 300000);
 })();
-</script>
