@@ -50,12 +50,12 @@ function getBusinessStatus(periods) {
   const closeLeeway = closeTime + 5;
 
   // Check "opening soon" (within 30 minutes) and handle leeway for opening
-  if (currentTime >= openLeeway - 30 && currentTime < openLeeway) {
+  if (currentTime >= openLeeway - 60 && currentTime < openLeeway) {
     return { open: false, status: 'opening soon' };
   }
 
   // Check "closing soon" (within 30 minutes) and handle leeway for closing
-  if (currentTime > closeLeeway - 30 && currentTime <= closeLeeway) {
+  if (currentTime > closeLeeway - 60 && currentTime <= closeLeeway) {
     return { open: true, status: 'closing soon' };
   }
 
