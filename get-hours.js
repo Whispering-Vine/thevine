@@ -23,7 +23,6 @@ async function fetchBusinessHours(placeId) {
   try {
     const url = `https://maps.googleapis.com/maps/api/place/details/json?fields=name,current_opening_hours,opening_hours&place_id=${placeId}&key=${API_KEY}`;
     const response = await axios.get(url);
-    console.log(response);
     return response.data.result;
   } catch (error) {
     console.error(`Error fetching data for place_id ${placeId}:`, error);
@@ -33,13 +32,12 @@ async function fetchBusinessHours(placeId) {
 
 // Function to calculate the status of the business
 function getBusinessStatus(periods) {
-  console.log(periods);
   const now = getCurrentPacificTime();
   const currentDay = now.getDay(); // Sunday = 0, Monday = 1, ..., Saturday = 6
   const currentTime = now.getHours() * 100 + now.getMinutes(); // Current time in 'HHMM' format
 
   const todayPeriod = periods.find(p => p.open.day === currentDay);
-
+  console.log(todayPeriod);
   if (!todayPeriod) return { open: false, status: 'closed' };
 
   const openTime = parseInt(todayPeriod.open.time, 10);
