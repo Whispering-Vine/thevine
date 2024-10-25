@@ -1,7 +1,7 @@
 {
   "fourth": {
-    "open": true,
-    "status": "closing soon"
+    "open": false,
+    "status": "closed"
   },
   "foothill": {
     "open": false,
