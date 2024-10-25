@@ -1,12 +1,14 @@
 {
   "fourth": {
-    "open": true,
-    "status": "open",
-    "hours": "11:00-21:00"
+    "opening-soon": 10,
+    "open": 11,
+    "closing-soon": 20,
+    "close": 21
   },
   "foothill": {
-    "open": true,
-    "status": "open",
-    "hours": "11:00-21:00"
+    "opening-soon": 10,
+    "open": 11,
+    "closing-soon": 20,
+    "close": 21
   }
 }
