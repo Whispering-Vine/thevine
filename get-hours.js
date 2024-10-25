@@ -5,17 +5,17 @@ const fs = require('fs');
 const API_KEY = process.env.GOOGLE_API_KEY;
 
 // Place IDs for 4th and Foothill locations
-const fourthPlaceId = 'ChIJRYa2xUlBmYARjYfP8QWaWfQ'; // 4th St location
-const foothillPlaceId = 'ChIJy2IdIjwVmYARcJ7NkrHy1-I'; // Replace with Foothill location's actual place_id
+const fourthPlaceId = 'ChIJRYa2xUlBmYARjYfP8QWaWfQ';
+const foothillPlaceId = 'ChIJy2IdIjwVmYARcJ7NkrHy1-I';
 
 // Utility function to get the current time in the business's timezone
 function getCurrentPacificTime() {
   return new Date(new Date().toLocaleString("en-US", { timeZone: "America/Los_Angeles" }));
 }
 
-// Function to format time from 'HHMM' to 'HH:MM' format
-function formatTime(time) {
-  return `${time.slice(0, 2)}:${time.slice(2)}`;
+// Function to format time from 'HHMM' to an integer hour
+function parseHour(time) {
+  return parseInt(time.slice(0, 2), 10);
 }
 
 // Function to fetch business hours
@@ -30,40 +30,24 @@ async function fetchBusinessHours(placeId) {
   }
 }
 
-// Function to calculate the status of the business
+// Function to calculate the business status in the required format
 function getBusinessStatus(periods) {
   const now = getCurrentPacificTime();
-  const currentDay = now.getDay(); // Sunday = 0, Monday = 1, ..., Saturday = 6
-  const currentTime = now.getHours() * 100 + now.getMinutes(); // Current time in 'HHMM' format
+  const currentDay = now.getDay(); 
 
   const todayPeriod = periods.find(p => p.open.day === currentDay);
-  console.log(todayPeriod);
-  if (!todayPeriod) return { open: false, status: 'closed' };
+  if (!todayPeriod) return { "opening-soon": null, "open": null, "closing-soon": null, "close": null };
 
-  const openTime = parseInt(todayPeriod.open.time, 10);
-  const closeTime = parseInt(todayPeriod.close.time, 10);
-
-  // 5-minute leeway
-  const openLeeway = openTime - 5;
-  const closeLeeway = closeTime + 5;
-
-  // Check "opening soon" (within 30 minutes) and handle leeway for opening
-  if (currentTime >= openLeeway - 60 && currentTime < openLeeway) {
-    return { open: false, status: 'opening soon' };
-  }
-
-  // Check "closing soon" (within 30 minutes) and handle leeway for closing
-  if (currentTime > closeLeeway - 60 && currentTime <= closeLeeway) {
-    return { open: true, status: 'closing soon' };
-  }
-
-  // Check if the business is open
-  if (currentTime >= openLeeway && currentTime <= closeLeeway) {
-    return { open: true, status: 'open', hours: `${formatTime(todayPeriod.open.time)}-${formatTime(todayPeriod.close.time)}` };
-  }
-
-  // Otherwise, the business is closed
-  return { open: false, status: 'closed' };
+  // Convert to integer hours for JSON output
+  const openHour = parseHour(todayPeriod.open.time);
+  const closeHour = parseHour(todayPeriod.close.time);
+  
+  return {
+    "opening-soon": openHour - 1, // 1 hour before opening
+    "open": openHour,
+    "closing-soon": closeHour - 1, // 1 hour before closing
+    "close": closeHour
+  };
 }
 
 // Main function to fetch and process business hours
@@ -75,8 +59,8 @@ function getBusinessStatus(periods) {
   ]);
 
   // Process the hours and calculate status
-  const fourthHours = fourth ? getBusinessStatus(fourth.current_opening_hours.periods) : { open: false, status: 'closed' };
-  const foothillHours = foothill ? getBusinessStatus(foothill.current_opening_hours.periods) : { open: false, status: 'closed' };
+  const fourthHours = fourth ? getBusinessStatus(fourth.current_opening_hours.periods) : { "opening-soon": null, "open": null, "closing-soon": null, "close": null };
+  const foothillHours = foothill ? getBusinessStatus(foothill.current_opening_hours.periods) : { "opening-soon": null, "open": null, "closing-soon": null, "close": null };
 
   // Create the JSON output
   const hoursToday = {
