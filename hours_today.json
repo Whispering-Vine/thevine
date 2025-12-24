@@ -2,13 +2,13 @@
   "fourth": {
     "opening-soon": 10,
     "open": 11,
-    "closing-soon": 20,
-    "close": 21
+    "closing-soon": 15,
+    "close": 16
   },
   "foothill": {
     "opening-soon": 10,
     "open": 11,
-    "closing-soon": 19,
-    "close": 20
+    "closing-soon": 15,
+    "close": 16
   }
 }
